@@ -11,4 +11,4 @@ Erstellt haben wir den Code in Eclipse.
 Hinweis Codeausführen:
 Die Dateinamen (Im Code gekennzeichnet) müssen im Projektordner vorhanden sein.
 
-Man kann auf GitHub dien ganzen Ordner als Zip runterladen, dann ist es am besten wenn man (z.B. in VSC) den ganzen Ordner im Workingspace öffnet und dann das Programm laufen lässt. Dann sollte es ziemlich sicher funktionieren. 
+Man kann auf GitHub den ganzen Ordner als Zip runterladen, dann ist es am besten wenn man (z.B. in VSC) den ganzen Ordner im Workingspace öffnet und dann das Programm laufen lässt. Dann sollte es ziemlich sicher funktionieren. 
