@@ -9,42 +9,34 @@ public class SCC {
 	static int[][] invertedAdjacencyMatrix;
 	static VerticeColor[] coloredVertices;
 	/**
-	 * Beschreibt ob die SCC eines Knotens bereits gefunden wurde.
+	 * true: SCC hat Knoten bereits gefunden
+	 * flase: nicht gefunden
 	 */
 	static boolean[] foundSCC;
 	/**
-	 * Speichert die finishing Time für die verschiedenen Knoten
+	 * Speichert fÃ¼r jeden Knoten die finishing Time ab
 	 */
 	static int[] finishingTime;
 	/**
-	 * Counter der die finishing Time über die Rekursion trackt.
+	 * ZÃ¤hler, der die finishing Time per Rekursion mitzÃ¤hlt
 	 */
 	static int finCounter;
 
 	/**
-	 * Diese Variablen werden manipuliert um eine Datei in das Programm zu laden,
-	 * aus Zeitgründen musste auf einen richtigen Import leider verzichtet werden.
-	 * Damit der Dateinamen verwendet werden kann, muss sich die Datei im
-	 * Projektverzeichnis liegen.
+	 *
+	 * !!!!!!!!!!!!!!!Hinweis:!!!!!!!!!!!!!!!!!!!!!!!
+	 * Dateinamen kÃ¶nnen nur verwendet werden, wenn die Dateien im Projektverzeichnis sind
 	 * 
 	 * Anzahl der Knoten des Graphen
 	 */
-	static int numVertices = 1000; // 1000 / 7
-	/**
-	 * Diese Variablen werden manipuliert um eine Datei in das Programm zu laden,
-	 * aus Zeitgründen musste auf einen richtigen Import leider verzichtet werden.
-	 * Damit der Dateinamen verwendet werden kann, muss sich die Datei im
-	 * Projektverzeichnis liegen.
-	 * 
+	static int numVertices = 1000; 
+	 
 	 * Dateiname der .csv Datei der Adjazenzmatrix
 	 */
 	static String filePath = "big_graph.csv"; // big_graph.csv / small_graph.csv
 
 	/**
-	 * Enum zur Darstellung der Einfärbung
-	 * 
-	 * @author jh
-	 *
+	 * Enum zur Darstellung der EinfÃ¤rbung
 	 */
 	enum VerticeColor {
 		WHITE, GREY, BLACK
@@ -53,19 +45,20 @@ public class SCC {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		// Hilfsvariablen für den Import
+		// Importhilfe
 		String line;
 		String[] splitLine;
 		int counter = 0;
 		BufferedReader br;
 
-		// Variable zum Speichern der Ergebnisse
+		// Speicher der Ergebnisse
 		ArrayList<ArrayList<Integer>> resultList = new ArrayList<ArrayList<Integer>>();
 
-		// Initialisierung der benötigten Arrays
+		// Initialisierung der benÃ¶tigten Arrays
 		initializeArrays();
 
-		// Import via BufferedReader und Parsen zu Int
+		// Import via BufferedReader
+		// Parsen zu Int
 		try {
 			br = new BufferedReader(new FileReader(filePath));
 			while (br.ready()) {
@@ -81,13 +74,13 @@ public class SCC {
 			e.printStackTrace();
 		}
 
-		// Erstellen der invertierten Adjazenzmatrix
+		// invertierten Adjazenzmatrix
 		initializeInvAdjMatrix();
 
-		// Initialisieren des foundSCC Arrays
+		// foundSCC Array
 		initializeFoundSCC();
 
-		// Mainloop des Algorithmus wie in der Vorlesung beschrieben
+		// Mainloop des Algorithmus (Vorlesung)
 		while (SCCnotFound()) {
 			DFS(adjacencyMatrix);
 			DFS(invertedAdjacencyMatrix, lookForMaxFinishTime());
@@ -99,9 +92,9 @@ public class SCC {
 	}
 	
 	/**
-	 * stellt eine gefundene SCC aus dem coloredVertices Array zusammen und setzt
-	 * die entsprechenden Knoten in foundSCC auf true um zu markieren das dieser
-	 * Knoten bereits zu einer SCC gehört
+	 * Die folgende Funktion setzt eine gefundene SCC aus dem coloredVertices Array zusammen und stellt
+	 * die entsprechenden Knoten in foundSCC auf true um, damit markiert wird, dass die
+	 * Knoten bereits zu einer SCC gehÃ¶ren
 	 * 
 	 * @return Liste von Indices
 	 */
@@ -118,10 +111,10 @@ public class SCC {
 	}
 
 	/**
-	 * Überprüft ob das foundSCC Array noch Knoten
+	 * ÃœberprÃ¼ft ob das foundSCC Array noch Knoten hat
 	 * 
-	 * @return wahr wenn noch Knoten existieren, falsch wenn alle Knoten zu einer
-	 *         SCC zugeordnet sind
+	 * @return true: Knoten existieren
+	 * @return false: wenn alle Knoten zu einer SCC zugeordnet sind
 	 */
 	static public boolean SCCnotFound() {
 		for (int i = 0; i < foundSCC.length; i++) {
@@ -133,27 +126,26 @@ public class SCC {
 	}
 
 	/**
-	 * Sucht den Index mit der größten finishTime
+	 * Index mit der grÃ¶ÃŸten finishTime
 	 * 
-	 * @return der Index mit der maximalen finishTime
+	 * @return Index, mit der maximalen finishTime
 	 */
 	static public int lookForMaxFinishTime() {
 		int max = -1;
-		int max_index = -1;
+		int max_index = -1; // Sonderzeichen, um Fehler auszuschlieÃŸen
 		for (int i = 0; i < finishingTime.length; i++) {
 			if (finishingTime[i] > max) {
 				max = finishingTime[i];
 				max_index = i;
 			}
 		}
-		// The max_index is set to -1 to make sure that it doesn't interfere with future
-		// values since 0 is a valid value
+		
 		finishingTime[max_index] = -1;
 		return max_index;
 	}
 
 	/**
-	 * resets the coloredVertices Array to reuse it in the DFS
+	 * coloredVertictes Array wird gelÃ¶scht, um die DFS neu starten zu kÃ¶nnen
 	 */
 	static public void resetColoredVertices() {
 		for (int i = 0; i < coloredVertices.length; i++) {
@@ -164,7 +156,7 @@ public class SCC {
 	/**
 	 * Startet DFS ohne bestimmte Quelle
 	 * 
-	 * @param Adjazenzmatrix bzw. Invertierte Adjazenzmatrix
+	 * @param Invertierte Adjazenzmatrix
 	 */
 	static public void DFS(int[][] matrix) {
 		resetColoredVertices();
@@ -179,24 +171,20 @@ public class SCC {
 	/**
 	 * Startet DFS mit bestimmter Quelle
 	 * 
-	 * @param Adjazenzmatrix bzw. Invertierte Adjazenzmatrix
+	 * @param Invertierte Adjazenzmatrix
 	 * @param Index
 	 */
 	static public void DFS(int[][] matrix, int src) {
 		resetColoredVertices();
 		finCounter = 0;
 		DFSVisit(matrix, src);
-		// Zusätzliche Zuweisung um zu verhindern das der zweite DFS Algorithmus den -1
-		// Wert im
-		// finishingTime Array überschreibt
 		finishingTime[src] = -1;
 	}
 
 	/**
-	 * Rekursion des DFS algorithmus, mit Counter und Zuweisung um die FinishTime zu
-	 * tracken
+	 * Rekursion, fÃ¼r in README beschriebener ZÃ¤hler
 	 * 
-	 * @param Adjazenzmatrix bzw. Invertierte Adjazenzmatrix
+	 * @param Invertierte Adjazenzmatrix
 	 * @param Index
 	 */
 	static public void DFSVisit(int[][] matrix, int src) {
@@ -246,7 +234,7 @@ public class SCC {
 	}
 	
 	/**
-	 * Ausgabefunktion der Resultate des Algorithmus
+	 * Ergebnisse
 	 * @param resultList eine Liste der SCCs, jedes SCC hat eine eigene Liste mit allen im SCC enthaltenen Knoten
 	 */
 	static public void printOutResults(ArrayList<ArrayList<Integer>> resultList) {
