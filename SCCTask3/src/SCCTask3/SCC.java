@@ -83,7 +83,7 @@ public class SCC {
 		initializeInvAdjMatrix();
 
 		// saw Array
-		initializeFoundSCC();
+		initializeSaw();
 
 		// Mainloop des Algorithmus (Vorlesung)
 		while (SCCnotFound()) {
@@ -232,7 +232,7 @@ public class SCC {
 	/**
 	 * Initialisierung des FoundSCC arrays
 	 */
-	static public void initializeFoundSCC() {
+	static public void initializeSaw() {
 		for (int i = 0; i < saw.length; i++) {
 			saw[i] = false;
 		}
