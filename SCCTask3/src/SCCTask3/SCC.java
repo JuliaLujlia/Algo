@@ -86,9 +86,9 @@ public class SCC {
 		initializeSaw();
 
 		// Mainloop des Algorithmus (Vorlesung)
-		while (SCCnotFound()) {
+		while (notSaw()) {
 			DFS(adjacencyMatrix);
-			DFS(invertedAdjacencyMatrix, lookForMaxFinishTime());
+			DFS(invertedAdjacencyMatrix, maxFinishTime());
 			resultList.add(compileSCC());
 		}
 
@@ -116,12 +116,12 @@ public class SCC {
 	}
 
 	/**
-	 * Überprüft ob das foundSCC Array noch Knoten hat
+	 * Überprüft ob das saw Array noch Knoten hat
 	 * 
 	 * @return true: Knoten existieren
 	 * @return false: wenn alle Knoten zu einer SCC zugeordnet sind
 	 */
-	static public boolean SCCnotFound() {
+	static public boolean notSaw() {
 		for (int i = 0; i < saw.length; i++) {
 			if (!saw[i]) {
 				return true;
@@ -131,11 +131,11 @@ public class SCC {
 	}
 
 	/**
-	 * Index mit der größten finishTime
+	 * Index mit der größten finishing time
 	 * 
-	 * @return Index, mit der maximalen finishTime
+	 * @return Index, mit der maximalen finishing time
 	 */
-	static public int lookForMaxFinishTime() {
+	static public int maxFinishTime() {
 		int max = -1;
 		int max_index = -1; // Sonderzeichen, um Fehler auszuschließen
 		for (int i = 0; i < timeStorage.length; i++) {
