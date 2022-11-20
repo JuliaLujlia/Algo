@@ -1,5 +1,5 @@
 Aufgabe 3: 
-Implementieren Sie einen Algorithmus der, gegeben einen gerichteten Graphen, die starken Zusammenhangskomponenten findet. 
+Implementieren Sie einen Algorithmus der, gegeben einen gerichteten Graphen, die starken Zusammenhangskomponenten findet. 
 
 Programmsprache: Java
 
