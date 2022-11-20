@@ -98,7 +98,7 @@ public class SCC {
 	
 	/**
 	 * Die folgende Funktion setzt eine gefundene SCC aus dem coloredVertices Array zusammen und stellt
-	 * die entsprechenden Knoten in foundSCC auf true um, damit markiert wird, dass die
+	 * die entsprechenden Knoten in saw auf true um, damit markiert wird, dass die
 	 * Knoten bereits zu einer SCC gehören
 	 * 
 	 * @return Liste von Indices
@@ -230,7 +230,7 @@ public class SCC {
 	}
 	
 	/**
-	 * Initialisierung des FoundSCC arrays
+	 * Initialisierung des saw arrays
 	 */
 	static public void initializeSaw() {
 		for (int i = 0; i < saw.length; i++) {
