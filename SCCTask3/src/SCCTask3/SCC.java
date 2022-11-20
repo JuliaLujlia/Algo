@@ -5,35 +5,30 @@ import java.util.*;
 
 public class SCC {
 
-	static int[][] adjacencyMatrix;
-	static int[][] invertedAdjacencyMatrix;
-	static VerticeColor[] coloredVertices;
-	/**
-	 * true: SCC hat Knoten bereits gefunden
-	 * flase: nicht gefunden
-	 */
-	static boolean[] foundSCC;
-	/**
-	 * Speichert für jeden Knoten die finishing Time ab
-	 */
-	static int[] finishingTime;
-	/**
-	 * Zähler, der die finishing Time per Rekursion mitzählt
-	 */
-	static int finCounter;
+	// Variablen definieren
 
 	/**
-	 *
-	 * !!!!!!!!!!!!!!!Hinweis:!!!!!!!!!!!!!!!!!!!!!!!
-	 * Dateinamen können nur verwendet werden, wenn die Dateien im Projektverzeichnis sind
-	 * 
+	 * true: SCC hat Knoten bereits gefunden
+	 * false: nicht gefunden
+	 */
+	static boolean[] saw;
+	/**
+	 * Speichert für jeden Knoten die Zeit (finishing time) ab
+	 */
+	static int[] timeStorage;
+	/**
+	 * Zähler, der die finishing time per Rekursion mitzählt
+	 */
+	static int timeCounter;
+
+	/**
 	 * Anzahl der Knoten des Graphen
 	 */
 	static int numVertices = 1000; 
-	 
-	 * Dateiname der .csv Datei der Adjazenzmatrix
-	 */
-	static String filePath = "big_graph.csv"; // big_graph.csv / small_graph.csv
+
+	static int[][] adjacencyMatrix;
+	static int[][] invertedAdjacencyMatrix;
+	static VerticeColor[] coloredVertices;
 
 	/**
 	 * Enum zur Darstellung der Einfärbung
@@ -42,14 +37,25 @@ public class SCC {
 		WHITE, GREY, BLACK
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	/**
+	 *
+	 * !!!!!!!!!!!!!!!Hinweis:!!!!!!!!!!!!!!!!!!!!!!!
+	 * Dateinamen können nur verwendet werden, wenn die Dateien im Projektverzeichnis sind
+	 * 
+	 */
+	
+	/** 
+	 * Dateiname der .csv Datei der Adjazenzmatrix
+	 */
+	static String filePath = "big_graph.csv"; // big_graph.csv / small_graph.csv
 
-		// Importhilfe
+	public static void main(String[] args) {
+
+		// Importhilfe (Hilfe von Anderen)
 		String line;
 		String[] splitLine;
 		int counter = 0;
-		BufferedReader br;
+		BufferedReader buffered;
 
 		// Speicher der Ergebnisse
 		ArrayList<ArrayList<Integer>> resultList = new ArrayList<ArrayList<Integer>>();
@@ -57,12 +63,12 @@ public class SCC {
 		// Initialisierung der benötigten Arrays
 		initializeArrays();
 
-		// Import via BufferedReader
-		// Parsen zu Int
+		// Import mittles BufferedReader
+		// Parsen -> Int
 		try {
-			br = new BufferedReader(new FileReader(filePath));
-			while (br.ready()) {
-				line = br.readLine();
+			buffered = new BufferedReader(new FileReader(filePath));
+			while (buffered.ready()) {
+				line = buffered.readLine();
 				splitLine = line.split(",");
 				for (int i = 0; i < numVertices; i++) {
 					adjacencyMatrix[counter][i] = Integer.parseInt(splitLine[i]);
@@ -70,14 +76,13 @@ public class SCC {
 				counter++;
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		// invertierten Adjazenzmatrix
 		initializeInvAdjMatrix();
 
-		// foundSCC Array
+		// saw Array
 		initializeFoundSCC();
 
 		// Mainloop des Algorithmus (Vorlesung)
@@ -103,7 +108,7 @@ public class SCC {
 		for (int i = 0; i < coloredVertices.length; i++) {
 			if (coloredVertices[i] == VerticeColor.BLACK) {
 				resultArrayList.add(i);
-				foundSCC[i] = true;
+				saw[i] = true;
 			}
 		}
 
@@ -117,8 +122,8 @@ public class SCC {
 	 * @return false: wenn alle Knoten zu einer SCC zugeordnet sind
 	 */
 	static public boolean SCCnotFound() {
-		for (int i = 0; i < foundSCC.length; i++) {
-			if (!foundSCC[i]) {
+		for (int i = 0; i < saw.length; i++) {
+			if (!saw[i]) {
 				return true;
 			}
 		}
@@ -133,14 +138,14 @@ public class SCC {
 	static public int lookForMaxFinishTime() {
 		int max = -1;
 		int max_index = -1; // Sonderzeichen, um Fehler auszuschließen
-		for (int i = 0; i < finishingTime.length; i++) {
-			if (finishingTime[i] > max) {
-				max = finishingTime[i];
+		for (int i = 0; i < timeStorage.length; i++) {
+			if (timeStorage[i] > max) {
+				max = timeStorage[i];
 				max_index = i;
 			}
 		}
 		
-		finishingTime[max_index] = -1;
+		timeStorage[max_index] = -1;
 		return max_index;
 	}
 
@@ -160,9 +165,9 @@ public class SCC {
 	 */
 	static public void DFS(int[][] matrix) {
 		resetColoredVertices();
-		finCounter = 0;
+		timeCounter = 0;
 		for (int i = 0; i < numVertices; i++) {
-			if (!foundSCC[i] && coloredVertices[i] == VerticeColor.WHITE) {
+			if (!saw[i] && coloredVertices[i] == VerticeColor.WHITE) {
 				DFSVisit(matrix, i);
 			}
 		}
@@ -176,9 +181,9 @@ public class SCC {
 	 */
 	static public void DFS(int[][] matrix, int src) {
 		resetColoredVertices();
-		finCounter = 0;
+		timeCounter = 0;
 		DFSVisit(matrix, src);
-		finishingTime[src] = -1;
+		timeStorage[src] = -1;
 	}
 
 	/**
@@ -192,14 +197,14 @@ public class SCC {
 
 		for (int i = 0; i < matrix[src].length; i++) {
 			if (matrix[src][i] == 1) {
-				if (!foundSCC[i] && coloredVertices[i] == VerticeColor.WHITE) {
+				if (!saw[i] && coloredVertices[i] == VerticeColor.WHITE) {
 					DFSVisit(matrix, i);
 				}
 			}
 		}
 		coloredVertices[src] = VerticeColor.BLACK;
-		finishingTime[src] = finCounter;
-		finCounter++;
+		timeStorage[src] = timeCounter;
+		timeCounter++;
 	}
 	
 	/**
@@ -209,8 +214,8 @@ public class SCC {
 		adjacencyMatrix = new int[numVertices][numVertices];
 		invertedAdjacencyMatrix = new int[numVertices][numVertices];
 		coloredVertices = new VerticeColor[numVertices];
-		finishingTime = new int[numVertices];
-		foundSCC = new boolean[numVertices];
+		timeStorage = new int[numVertices];
+		saw = new boolean[numVertices];
 	}
 	
 	/**
@@ -228,8 +233,8 @@ public class SCC {
 	 * Initialisierung des FoundSCC arrays
 	 */
 	static public void initializeFoundSCC() {
-		for (int i = 0; i < foundSCC.length; i++) {
-			foundSCC[i] = false;
+		for (int i = 0; i < saw.length; i++) {
+			saw[i] = false;
 		}
 	}
 	
@@ -239,14 +244,14 @@ public class SCC {
 	 */
 	static public void printOutResults(ArrayList<ArrayList<Integer>> resultList) {
 		int counter = 0;
-		for (ArrayList<Integer> al : resultList) {
+		for (ArrayList<Integer> list : resultList) {
 			counter = 0;
-			for (Integer i : al) {
+			for (Integer i : list) {
 				if(counter % 30 == 0)
 				{
 					System.out.println();
 				}
-				System.out.print(i + " ,");
+				System.out.print(i + ", ");
 				counter++;
 			}
 			System.out.println();
