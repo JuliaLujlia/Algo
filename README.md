@@ -14,5 +14,5 @@ Die Dateinamen (Im Code gekennzeichnet) müssen im Projektordner vorhanden sein.
 Man kann auf GitHub den ganzen Ordner als Zip runterladen, dann ist es am besten wenn man (z.B. in VSC) den ganzen Ordner im Workingspace öffnet und dann das Programm laufen lässt. Dann sollte es ziemlich sicher funktionieren. 
 
 Hinweis zum ComponentGraph:
-unsicher wie man einen component Graph zeichnet. Idee war: 
-Wie in unserer ReadMe Datei erklärt, ist jede Zeile eine stark verbundene Komponente. Die waren also schonmal festgelegt. Um es einfacher zu gestalten, haben wir A B C in eine andere Farbe dargestellt, um nicht alle Zeilen-Einträge zu zeichnen (alle Einträge haben eine Verbindung zu jedem Knoten). Der Rest ist aufsteigend sortiert.
+Idee: 
+Wie in unserer ReadMe Datei erklärt, ist jede Zeile eine stark verbundene Komponente. Die waren also schonmal festgelegt. Um es einfacher zu gestalten, haben wir A B C in eine andere Farbe dargestellt, um nicht alle Zeilen-Einträge zu zeichnen (alle Einträge haben eine Verbindung zu jedem Knoten). 
