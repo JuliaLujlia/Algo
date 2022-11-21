@@ -14,7 +14,7 @@ Wenn dann auf diesen Knoten in der transponierten Matrix eine weitere DFS starte
 
 Das Ergebnis schreibt man in eine Liste, dann wird DFS wieder auf dem Knoten mit der höchsten saw (Finishing time) unter den verbleibenden Knoten aufgerufen usw. 
 
-Umdas zu „vereinfachen“ haben wir eine Importfunktion, die mit einem BufferedReader die .csv-Datei auswertet und die darin enthaltene Datei den Graphen in eine Adjazenzmatrix parst.
+Um das zu „vereinfachen“ haben wir eine Importfunktion, die mit einem BufferedReader die .csv-Datei auswertet und die darin enthaltene Datei den Graphen in eine Adjazenzmatrix parst.
 
 In unserer Hauptfunktion ist eine Funktion zum Transponieren der gegebenen Matrix, eine Schleife zum Ausführen des oben beschriebenen Konzepts und eine Funktion zum Schreiben und Zurückgeben der gefundenen stark verbundenen Komponenten in einer ArrayList. 
 
